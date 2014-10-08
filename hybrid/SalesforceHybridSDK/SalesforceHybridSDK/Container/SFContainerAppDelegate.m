@@ -190,7 +190,8 @@ static SFLogLevel const kAppLogLevel = SFLogLevelInfo;
             [SFSecurityLockout setLockScreenSuccessCallbackBlock:^{
                 [self.viewController.commandDelegate getCommandInstance:kSFSmartStorePluginName];
             }];
-            [SFSecurityLockout validateTimer];
+            // Disable security lockout timer
+            // [SFSecurityLockout validateTimer];
         }
     } else {
         // Actions to take place exclusively when the app starts up.
