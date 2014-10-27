@@ -77,6 +77,7 @@ static NSString * const kSFSmartStoreVerifyReadDbErrorDesc = @"Could not read fr
                               newKey:(NSString *)newKey
                                error:(NSError **)error;
 - (FMDatabase *)openDatabaseWithPath:(NSString *)dbPath key:(NSString *)key error:(NSError **)error;
+- (FMDatabase *)openDatabaseWithPath:(NSString *)dbPath error:(NSError **)error;
 - (BOOL)verifyDatabaseAccess:(NSString *)dbPath key:(NSString *)key error:(NSError **)error;
 
 @end
@@ -133,9 +134,27 @@ static NSString * const kSFSmartStoreVerifyReadDbErrorDesc = @"Could not read fr
     return result;
 }
 
+- (FMDatabase *)openStoreDatabaseWithName:(NSString *)storeName error:(NSError **)error {
+    NSString *fullDbFilePath = [self fullDbFilePathForStoreName:storeName];
+    return [self openDatabaseWithPath:fullDbFilePath error:error];
+}
+
 - (FMDatabase *)openStoreDatabaseWithName:(NSString *)storeName key:(NSString *)key error:(NSError **)error {
     NSString *fullDbFilePath = [self fullDbFilePathForStoreName:storeName];
     return [self openDatabaseWithPath:fullDbFilePath key:key error:error];
+}
+
+- (FMDatabase *)openDatabaseWithPath:(NSString *)dbPath error:(NSError **)error {
+    FMDatabase *db = [FMDatabase databaseWithPath:dbPath];
+    [db setLogsErrors:YES];
+    [db setCrashOnErrors:NO];
+    if ([db open]) {
+        return db;
+    } else {
+        NSLog(@"Couldn't open store db at: %@ error: %@", dbPath,[db lastErrorMessage]);
+        *error = [db lastError];
+        return nil;
+    }
 }
 
 - (FMDatabase *)openDatabaseWithPath:(NSString *)dbPath key:(NSString *)key error:(NSError **)error {

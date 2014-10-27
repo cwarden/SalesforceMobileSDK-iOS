@@ -48,6 +48,14 @@ extern NSString * const kSFSmartStoreDbErrorDomain;
 /**
  Creates or opens an existing store DB.
  @param storeName The name of the store to create or open.
+ @param error Returned if there's an error with the process.
+ @return The FMDatabase instance representing the DB, or nil if the create/open failed.
+ */
+- (FMDatabase *)openStoreDatabaseWithName:(NSString *)storeName error:(NSError **)error;
+
+/**
+ Creates or opens an existing store DB.
+ @param storeName The name of the store to create or open.
  @param key The encryption key associated with the store.
  @param error Returned if there's an error with the process.
  @return The FMDatabase instance representing the DB, or nil if the create/open failed.
