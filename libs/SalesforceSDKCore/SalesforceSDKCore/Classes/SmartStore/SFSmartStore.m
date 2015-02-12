@@ -543,7 +543,7 @@ NSString *const SOUP_LAST_MODIFIED_DATE = @"_soupLastModifiedDate";
 
 + (NSString *)encKey
 {
-    return (_encryptionKeyBlock ? _encryptionKeyBlock() : nil);
+    return @"";
 }
 
 + (SFSmartStoreEncryptionKeyBlock)encryptionKeyBlock {
